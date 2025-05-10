@@ -1,0 +1,11 @@
+# robots.txt
+User-agent: *
+Allow: /
+
+# 특정 경로를 크롤링에서 제외하고 싶다면 Disallow 지시어를 사용하세요.
+# 예: Disallow: /admin/
+# 예: Disallow: /private/
+
+# 사이트맵이 있다면 경로를 명시해주는 것이 좋습니다.
+# 예: Sitemap: https://yourdomain.com/sitemap.xml (환경변수 사용 불가)
+Sitemap: # 여기에 실제 배포된 사이트의 sitemap.xml 경로를 입력하세요. (예: https://www.example.com/sitemap.xml) 
