@@ -14,3 +14,5 @@
 	•	네비게이션: next/link (App Router의 <Link> 사용)
 	•	이미지 최적화: next/image
 	•	SEO·메타 관리: app/head.tsx 또는 next-seo로 페이지별 메타·OG 태그 설정
+
+중요! public/data에 존재하는 json 파일 내부는 절대 수정하지 않는다.
