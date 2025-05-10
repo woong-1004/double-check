@@ -2,7 +2,6 @@ import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
 import ReactQueryProvider from "@/components/ReactQueryProvider";
-// import Link from "next/link"; // Header에서 사용하므로 여기서는 제거 가능
 import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
 import { CopilotKit } from "@copilotkit/react-core";
@@ -73,10 +72,9 @@ export default function RootLayout({
       >
         <CopilotKit runtimeUrl={process.env.NEXT_PUBLIC_CHAT_API_BASE_URL}>
           <Header />
-          <main className="pt-16">
-            {/* pt-24는 헤더 높이(p-4 = 1rem = 16px, 16px*1.5=24px 정도 여유) + 추가여백. 실제 헤더 높이에 맞게 조정 필요 */}
+          <main className="pt-8">
             <ReactQueryProvider>{children}</ReactQueryProvider>
-          </main>{" "}
+          </main>
           <Footer />
         </CopilotKit>
       </body>
