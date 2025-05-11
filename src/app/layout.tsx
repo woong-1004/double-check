@@ -65,12 +65,32 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  // Check if the runtime URL is available
+  const runtimeUrl = process.env.NEXT_PUBLIC_CHAT_API_BASE_URL;
+  
+  // If no runtime URL is available, render without CopilotKit
+  if (!runtimeUrl) {
+    return (
+      <html lang="ko">
+        <body
+          className={`${inter.className} bg-gray-50 text-gray-800 flex flex-col min-h-screen`}
+        >
+          <Header />
+          <main className="pt-8">
+            <ReactQueryProvider>{children}</ReactQueryProvider>
+          </main>
+          <Footer />
+        </body>
+      </html>
+    );
+  }
+
   return (
     <html lang="ko">
       <body
         className={`${inter.className} bg-gray-50 text-gray-800 flex flex-col min-h-screen`}
       >
-        <CopilotKit runtimeUrl={process.env.NEXT_PUBLIC_CHAT_API_BASE_URL}>
+        <CopilotKit runtimeUrl={runtimeUrl}>
           <Header />
           <main className="pt-8">
             <ReactQueryProvider>{children}</ReactQueryProvider>
