@@ -1,3 +1,5 @@
+"use client";
+
 import { useState, useMemo, useEffect } from "react";
 import type { GroupedNewsTopic } from "@/types/news";
 import SearchBar from "@/components/common/SearchBar";
@@ -14,6 +16,7 @@ const TOPIC_GROUPS_PER_PAGE = 3;
 export default function NewsCheckClientContent({
   initialGroupedNews,
 }: NewsCheckClientContentProps) {
+  // Sort news by date initially
   const sortedInitialNews = [...initialGroupedNews].sort((a, b) =>
     new Date(b.date).getTime() - new Date(a.date).getTime()
   );
@@ -46,6 +49,7 @@ export default function NewsCheckClientContent({
 
   const filteredNews = useMemo(() => {
     return groupedNews.filter((group) => {
+      // Search term filter
       const searchTermLower = debouncedSearchTerm.toLowerCase();
       const matchesSearch =
         !debouncedSearchTerm ||
@@ -60,6 +64,7 @@ export default function NewsCheckClientContent({
         (group.commonFactCheck &&
           group.commonFactCheck.toLowerCase().includes(searchTermLower));
 
+      // Keyword filter
       const matchesKeywords =
         selectedKeywords.length === 0 ||
         selectedKeywords.some(
@@ -102,7 +107,7 @@ export default function NewsCheckClientContent({
             handleTopicGroupPageChange(currentPageForTopicGroups - 1)
           }
           disabled={currentPageForTopicGroups === 1}
-          className="px-4 py-2 text-sm font-medium text-white bg-[#AA60C8] rounded-md hover:bg-[#9550B8] disabled:bg-gray-300 disabled:cursor-not-allowed"
+          className="px-4 py-2 text-sm font-medium text-white bg-indigo-600 rounded-md hover:bg-indigo-700 disabled:bg-gray-300 disabled:cursor-not-allowed"
         >
           이전 토픽 그룹
         </button>
@@ -114,7 +119,7 @@ export default function NewsCheckClientContent({
             handleTopicGroupPageChange(currentPageForTopicGroups + 1)
           }
           disabled={currentPageForTopicGroups === totalTopicGroupPages}
-          className="px-4 py-2 text-sm font-medium text-white bg-[#AA60C8] rounded-md hover:bg-[#9550B8] disabled:bg-gray-300 disabled:cursor-not-allowed"
+          className="px-4 py-2 text-sm font-medium text-white bg-indigo-600 rounded-md hover:bg-indigo-700 disabled:bg-gray-300 disabled:cursor-not-allowed"
         >
           다음 토픽 그룹
         </button>

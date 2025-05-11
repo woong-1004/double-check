@@ -1,3 +1,5 @@
+"use client";
+
 import React, { useState } from "react";
 import type { GroupedNewsTopic, ProcessedNewsItem } from "@/types/news";
 import YouTubePlayer from "@/components/news-check/YouTubePlayer";
@@ -12,10 +14,11 @@ const NewsTopicDisplay: React.FC<NewsTopicDisplayProps> = ({ group }) => {
 
   return (
     <div className="mb-12 p-6 md:p-8 bg-white rounded-xl shadow-2xl">
+      {/* 주제 제목 및 날짜 */}
       <div className="mb-6 pb-4 border-b border-gray-200">
         <div className="flex justify-between items-start">
           <div>
-            <h2 className="text-3xl font-bold text-[#AA60C8]">{group.topic}</h2>
+            <h2 className="text-3xl font-bold text-indigo-700">{group.topic}</h2>
             <p className="text-md text-gray-500 mt-1">{group.date}</p>
           </div>
           <button
@@ -27,6 +30,7 @@ const NewsTopicDisplay: React.FC<NewsTopicDisplayProps> = ({ group }) => {
         </div>
       </div>
 
+      {/* 미디어별 AI 요약 및 분석 */}
       <div>
         <h3 className="text-2xl font-bold text-gray-800 mb-6">
           미디어별 AI 요약 및 분석{" "}
@@ -76,6 +80,7 @@ const NewsTopicDisplay: React.FC<NewsTopicDisplayProps> = ({ group }) => {
         )}
       </div>
 
+      {/* Fact Check Modal */}
       <Dialog
         open={isFactCheckOpen}
         onClose={() => setIsFactCheckOpen(false)}
@@ -101,6 +106,6 @@ const NewsTopicDisplay: React.FC<NewsTopicDisplayProps> = ({ group }) => {
       </Dialog>
     </div>
   );
-}
+};
 
 export default NewsTopicDisplay;
