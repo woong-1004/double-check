@@ -68,7 +68,7 @@ export default function RootLayout({
 }>) {
   // Check if the runtime URL is available
   const runtimeUrl = process.env.NEXT_PUBLIC_CHAT_API_BASE_URL;
-  
+
   // If no runtime URL is available, render without CopilotKit
   if (!runtimeUrl) {
     return (
