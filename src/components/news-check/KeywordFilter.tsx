@@ -30,8 +30,8 @@ const KeywordFilter: React.FC<KeywordFilterProps> = ({
               onClick={() => onKeywordToggle(keyword)}
               className={`px-4 py-2 rounded-full text-sm font-medium transition-colors ${
                 isSelected
-                  ? "bg-indigo-600 text-white"
-                  : "bg-gray-100 text-gray-700 hover:bg-gray-200"
+                  ? "bg-[#AA60C8] text-white"
+                  : "bg-gray-100 text-gray-700 hover:bg-[#F0E6F5]"
               }`}
             >
               {keyword}
