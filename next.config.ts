@@ -1,7 +1,13 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
-  /* config options here */
+  webpack: (config, { dev }) => {
+    if (dev) {
+      // Disable cache in development to avoid ENOENT errors
+      config.cache = false;
+    }
+    return config;
+  }
 };
 
 export default nextConfig;
