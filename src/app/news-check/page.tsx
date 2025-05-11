@@ -54,36 +54,38 @@ async function getNewsData(): Promise<GroupedNewsTopic[]> {
     const fileContents = await fs.readFile(filePath, "utf8");
     const rawNewsItems: RawNewsItem[] = JSON.parse(fileContents);
 
-    // First, group items by date
-    const groupedByDate: { [key: string]: RawNewsItem[] } = {};
+    // First, group items by topic and date combination
+    const groupedByTopicAndDate: { [key: string]: RawNewsItem[] } = {};
     rawNewsItems.forEach((item) => {
-      if (!groupedByDate[item.date]) {
-        groupedByDate[item.date] = [];
+      const key = `${item.topic}-${item.date}`;
+      if (!groupedByTopicAndDate[key]) {
+        groupedByTopicAndDate[key] = [];
       }
-      groupedByDate[item.date].push(item);
+      groupedByTopicAndDate[key].push(item);
     });
 
-    // Convert each date group into a GroupedNewsTopic
-    const result: GroupedNewsTopic[] = Object.entries(groupedByDate).map(([date, items]) => {
-      // Get the first topic and its factCheck for this date group
-      const firstItem = items[0];
-      
-      const processedItems: ProcessedNewsItem[] = items.map((item, index) => ({
-        id: item.id || `${item.media}-${item.date}-${index}`,
-        politicalOrientation: item.politicalOrientation,
-        media: item.media,
-        videoLink: item.videoLink,
-        aiSummary: item.aiSummary,
-        youtubeVideoId: getYouTubeVideoId(item.videoLink),
-      }));
+    // Convert each topic-date group into a GroupedNewsTopic
+    const result: GroupedNewsTopic[] = Object.entries(groupedByTopicAndDate).map(
+      ([key, items]) => {
+        const firstItem = items[0];
+        
+        const processedItems: ProcessedNewsItem[] = items.map((item, index) => ({
+          id: item.id || `${item.media}-${item.date}-${index}`,
+          politicalOrientation: item.politicalOrientation,
+          media: item.media,
+          videoLink: item.videoLink,
+          aiSummary: item.aiSummary,
+          youtubeVideoId: getYouTubeVideoId(item.videoLink),
+        }));
 
-      return {
-        topic: firstItem.topic,
-        date: date,
-        items: processedItems,
-        commonFactCheck: firstItem.topicFactCheck,
-      };
-    });
+        return {
+          topic: firstItem.topic,
+          date: firstItem.date,
+          items: processedItems,
+          commonFactCheck: firstItem.topicFactCheck,
+        };
+      }
+    );
 
     // Sort by date in descending order (newest first)
     return result.sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
