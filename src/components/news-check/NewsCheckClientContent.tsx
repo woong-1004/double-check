@@ -1,3 +1,5 @@
+"use client";
+
 import { useState, useMemo, useEffect } from "react";
 import type { GroupedNewsTopic } from "@/types/news";
 import SearchBar from "@/components/common/SearchBar";
@@ -33,10 +35,6 @@ export default function NewsCheckClientContent({
   }, [searchTerm]);
 
   const handleKeywordToggle = (keyword: string) => {
-    if (keyword === "전체") {
-      setSelectedKeywords([]);
-      return;
-    }
     setSelectedKeywords((prev) =>
       prev.includes(keyword)
         ? prev.filter((k) => k !== keyword)
@@ -109,7 +107,7 @@ export default function NewsCheckClientContent({
             handleTopicGroupPageChange(currentPageForTopicGroups - 1)
           }
           disabled={currentPageForTopicGroups === 1}
-          className="px-4 py-2 text-sm font-medium text-white bg-[#AA60C8] rounded-md hover:bg-[#9550B8] disabled:bg-gray-300 disabled:cursor-not-allowed"
+          className="px-4 py-2 text-sm font-medium text-white bg-indigo-600 rounded-md hover:bg-indigo-700 disabled:bg-gray-300 disabled:cursor-not-allowed"
         >
           이전 토픽 그룹
         </button>
@@ -121,7 +119,7 @@ export default function NewsCheckClientContent({
             handleTopicGroupPageChange(currentPageForTopicGroups + 1)
           }
           disabled={currentPageForTopicGroups === totalTopicGroupPages}
-          className="px-4 py-2 text-sm font-medium text-white bg-[#AA60C8] rounded-md hover:bg-[#9550B8] disabled:bg-gray-300 disabled:cursor-not-allowed"
+          className="px-4 py-2 text-sm font-medium text-white bg-indigo-600 rounded-md hover:bg-indigo-700 disabled:bg-gray-300 disabled:cursor-not-allowed"
         >
           다음 토픽 그룹
         </button>
@@ -132,7 +130,7 @@ export default function NewsCheckClientContent({
   return (
     <div className="w-full max-w-5xl mx-auto px-4 py-8">
       <h1 className="text-4xl font-extrabold mb-4 text-center text-gray-800">
-        뉴스체크
+        뉴스 체크
       </h1>
       <p className="text-lg text-gray-600 text-center mb-8">
         다양한 시각의 뉴스와 AI 요약, 팩트체크를 비교해보세요.

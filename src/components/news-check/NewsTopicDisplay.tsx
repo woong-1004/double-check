@@ -1,3 +1,5 @@
+"use client";
+
 import React, { useState } from "react";
 import type { GroupedNewsTopic, ProcessedNewsItem } from "@/types/news";
 import YouTubePlayer from "@/components/news-check/YouTubePlayer";
@@ -16,12 +18,12 @@ const NewsTopicDisplay: React.FC<NewsTopicDisplayProps> = ({ group }) => {
       <div className="mb-6 pb-4 border-b border-gray-200">
         <div className="flex justify-between items-start">
           <div>
-            <h2 className="text-3xl font-bold text-[#AA60C8]">{group.topic}</h2>
+            <h2 className="text-3xl font-bold text-indigo-700">{group.topic}</h2>
             <p className="text-md text-gray-500 mt-1">{group.date}</p>
           </div>
           <button
             onClick={() => setIsFactCheckOpen(true)}
-            className="px-4 py-2 bg-[#F5EBFA] text-[#AA60C8] rounded-lg hover:bg-[#EBD6F5] transition-colors duration-200 flex items-center shadow-sm"
+            className="px-4 py-2 bg-blue-50 text-blue-700 rounded-lg hover:bg-blue-100 transition-colors duration-200 flex items-center shadow-sm"
           >
             🧠 AI 팩트체크
           </button>
@@ -94,7 +96,7 @@ const NewsTopicDisplay: React.FC<NewsTopicDisplayProps> = ({ group }) => {
               {group.commonFactCheck}
             </div>
             <button
-              className="mt-6 inline-flex justify-center rounded-md border border-transparent bg-[#F5EBFA] px-4 py-2 text-sm font-medium text-[#AA60C8] hover:bg-[#EBD6F5] focus:outline-none focus-visible:ring-2 focus-visible:ring-[#AA60C8] focus-visible:ring-offset-2"
+              className="mt-6 inline-flex justify-center rounded-md border border-transparent bg-blue-100 px-4 py-2 text-sm font-medium text-blue-900 hover:bg-blue-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2"
               onClick={() => setIsFactCheckOpen(false)}
             >
               닫기
