@@ -5,6 +5,7 @@ import ReactQueryProvider from "@/components/ReactQueryProvider";
 import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
 import { CopilotKit } from "@copilotkit/react-core";
+import CopilotPopupLoader from "@/components/common/CopilotPopupLoader";
 import "@copilotkit/react-ui/styles.css";
 
 const inter = Inter({ subsets: ["latin"] });
@@ -96,6 +97,7 @@ export default function RootLayout({
             <ReactQueryProvider>{children}</ReactQueryProvider>
           </main>
           <Footer />
+          <CopilotPopupLoader />
         </CopilotKit>
       </body>
     </html>
