@@ -17,6 +17,15 @@ const Footer = () => {
           </a>
           ) 등 공식 자료를 기반으로 합니다.
         </p>
+        <div className="mt-4 space-x-2">
+          <Link href="/privacy-policy" className="text-gray-600 hover:underline">
+            개인정보처리방침
+          </Link>
+          <span className="text-gray-400">·</span>
+          <Link href="/terms-of-service" className="text-gray-600 hover:underline">
+            이용약관
+          </Link>
+        </div>
         <p className="mt-2">
           &copy; {new Date().getFullYear()} Double Check. All rights reserved.
         </p>
