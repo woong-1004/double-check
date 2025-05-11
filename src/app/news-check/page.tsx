@@ -54,42 +54,39 @@ async function getNewsData(): Promise<GroupedNewsTopic[]> {
     const fileContents = await fs.readFile(filePath, "utf8");
     const rawNewsItems: RawNewsItem[] = JSON.parse(fileContents);
 
-    // Group by date first, then by topic within each date
-    const groupedByDate: { [key: string]: { [key: string]: GroupedNewsTopic } } = {};
-
-    rawNewsItems.forEach((item, index) => {
+    // First, group items by date
+    const groupedByDate: { [key: string]: RawNewsItem[] } = {};
+    rawNewsItems.forEach((item) => {
       if (!groupedByDate[item.date]) {
-        groupedByDate[item.date] = {};
+        groupedByDate[item.date] = [];
       }
+      groupedByDate[item.date].push(item);
+    });
 
-      if (!groupedByDate[item.date][item.topic]) {
-        groupedByDate[item.date][item.topic] = {
-          topic: item.topic,
-          date: item.date,
-          items: [],
-          commonFactCheck: item.topicFactCheck,
-        };
-      }
-
-      const itemId = item.id || `${item.media}-${item.date}-${index}`;
-
-      const processedItem: ProcessedNewsItem = {
-        id: itemId,
+    // Convert each date group into a GroupedNewsTopic
+    const result: GroupedNewsTopic[] = Object.entries(groupedByDate).map(([date, items]) => {
+      // Get the first topic and its factCheck for this date group
+      const firstItem = items[0];
+      
+      const processedItems: ProcessedNewsItem[] = items.map((item, index) => ({
+        id: item.id || `${item.media}-${item.date}-${index}`,
         politicalOrientation: item.politicalOrientation,
         media: item.media,
         videoLink: item.videoLink,
         aiSummary: item.aiSummary,
         youtubeVideoId: getYouTubeVideoId(item.videoLink),
+      }));
+
+      return {
+        topic: firstItem.topic,
+        date: date,
+        items: processedItems,
+        commonFactCheck: firstItem.topicFactCheck,
       };
-      groupedByDate[item.date][item.topic].items.push(processedItem);
     });
 
-    // Convert nested objects to array and sort by date (newest first)
-    const result = Object.values(groupedByDate)
-      .flatMap(dateGroup => Object.values(dateGroup))
-      .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
-
-    return result;
+    // Sort by date in descending order (newest first)
+    return result.sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
   } catch (error) {
     console.error("Failed to read or parse news data:", error);
     return [];
