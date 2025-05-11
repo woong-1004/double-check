@@ -23,13 +23,13 @@ const Header = () => {
             href="/policy-check"
             className="px-3 py-2 hover:text-gray-600 transition-colors rounded-md text-sm sm:text-base"
           >
-            정책 체크
+            정책체크
           </Link>
           <Link
             href="/news-check"
             className="px-3 py-2 hover:text-gray-600 transition-colors rounded-md text-sm sm:text-base"
           >
-            뉴스 체크
+            뉴스체크
           </Link>
         </div>
       </nav>
