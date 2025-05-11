@@ -6,10 +6,10 @@ import type {
   ProcessedNewsItem,
   GroupedNewsTopic,
 } from "@/types/news";
-import NewsCheckClientContent from "@/components/news-check/NewsCheckClientContent"; // 추후 사용 -> 주석 해제
+import NewsCheckClientContent from "@/components/news-check/NewsCheckClientContent";
 
 export const metadata: Metadata = {
-  title: "뉴스 교차 검증", // layout.tsx의 title.template에 의해 "뉴스 교차 검증 | Double Check"가 됨
+  title: "뉴스 교차 검증",
   description:
     "다양한 언론사의 뉴스와 AI 요약, 팩트체크를 비교하여 이슈를 다각도로 분석합니다. 정치적 편향성에 대한 이해를 돕습니다.",
   openGraph: {
@@ -17,11 +17,9 @@ export const metadata: Metadata = {
     description:
       "최신 정치 이슈에 대한 다양한 언론사의 보도와 AI 요약을 비교 분석하세요.",
     url: "/news-check",
-    // 이 페이지를 위한 특정 OG 이미지가 있다면 여기에 추가 (예: images: ['/og-image-news.png'])
   },
 };
 
-// 유튜브 비디오 ID 추출 헬퍼 함수
 function getYouTubeVideoId(url?: string): string | undefined {
   if (!url) return undefined;
   let videoId: string | undefined;
@@ -38,10 +36,8 @@ function getYouTubeVideoId(url?: string): string | undefined {
         videoId = urlObj.pathname.split("/v/")[1];
       }
     }
-    // 짧은 ID 형식 (11자리)인지 간단히 확인. 더 엄격한 정규식 사용 가능.
     return videoId && /^[a-zA-Z0-9_-]{11}$/.test(videoId) ? videoId : undefined;
   } catch (e) {
-    // URL 파싱 실패 등 예외 발생 시 콘솔에 로그 남기고 undefined 반환
     console.error(`Failed to parse YouTube URL: ${url}`, e);
     return undefined;
   }
@@ -58,26 +54,24 @@ async function getNewsData(): Promise<GroupedNewsTopic[]> {
     const fileContents = await fs.readFile(filePath, "utf8");
     const rawNewsItems: RawNewsItem[] = JSON.parse(fileContents);
 
-    const groupedByTopicAndDate: { [key: string]: GroupedNewsTopic } = {};
+    // Group by date first, then by topic within each date
+    const groupedByDate: { [key: string]: { [key: string]: GroupedNewsTopic } } = {};
 
     rawNewsItems.forEach((item, index) => {
-      const groupKey = `${item.topic}#-#${item.date}`; // 복합 키 사용
+      if (!groupedByDate[item.date]) {
+        groupedByDate[item.date] = {};
+      }
 
-      if (!groupedByTopicAndDate[groupKey]) {
-        groupedByTopicAndDate[groupKey] = {
+      if (!groupedByDate[item.date][item.topic]) {
+        groupedByDate[item.date][item.topic] = {
           topic: item.topic,
           date: item.date,
           items: [],
-          commonFactCheck: item.topicFactCheck, // 첫 번째 아이템의 팩트체크를 공통으로 사용
+          commonFactCheck: item.topicFactCheck,
         };
       }
 
-      // 임시 고유 ID 생성 (더 견고한 방법으로 대체 가능)
-      const itemId =
-        item.id ||
-        `${item.media}-${item.date}-${item.aiSummary
-          .substring(0, 20)
-          .replace(/\s+/g, "-")}-${index}`;
+      const itemId = item.id || `${item.media}-${item.date}-${index}`;
 
       const processedItem: ProcessedNewsItem = {
         id: itemId,
@@ -87,13 +81,18 @@ async function getNewsData(): Promise<GroupedNewsTopic[]> {
         aiSummary: item.aiSummary,
         youtubeVideoId: getYouTubeVideoId(item.videoLink),
       };
-      groupedByTopicAndDate[groupKey].items.push(processedItem);
+      groupedByDate[item.date][item.topic].items.push(processedItem);
     });
 
-    return Object.values(groupedByTopicAndDate);
+    // Convert nested objects to array and sort by date (newest first)
+    const result = Object.values(groupedByDate)
+      .flatMap(dateGroup => Object.values(dateGroup))
+      .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
+
+    return result;
   } catch (error) {
     console.error("Failed to read or parse news data:", error);
-    return []; // 에러 발생 시 빈 배열 반환
+    return [];
   }
 }
 
