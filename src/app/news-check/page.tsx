@@ -75,14 +75,12 @@ async function getNewsData(): Promise<GroupedNewsTopic[]> {
       // 임시 고유 ID 생성 (더 견고한 방법으로 대체 가능)
       const itemId =
         item.id ||
-        `${item.media}-${item.date}-${item.aiSummary
+        `${item.topic}-${item.date}-${item.aiSummary
           .substring(0, 20)
           .replace(/\s+/g, "-")}-${index}`;
 
       const processedItem: ProcessedNewsItem = {
         id: itemId,
-        politicalOrientation: item.politicalOrientation,
-        media: item.media,
         videoLink: item.videoLink,
         aiSummary: item.aiSummary,
         youtubeVideoId: getYouTubeVideoId(item.videoLink),

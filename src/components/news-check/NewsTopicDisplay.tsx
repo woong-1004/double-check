@@ -1,36 +1,36 @@
 "use client";
 
-import React from "react";
+import React, { useState } from "react";
 import type { GroupedNewsTopic, ProcessedNewsItem } from "@/types/news";
 import YouTubePlayer from "@/components/news-check/YouTubePlayer";
+import { Dialog } from "@headlessui/react";
 
 interface NewsTopicDisplayProps {
-  group: GroupedNewsTopic; // 이제 group.items는 전체 아이템을 포함
-  // currentPage, totalPages, onPageChange, itemsPerPage, totalItems props 제거
+  group: GroupedNewsTopic;
 }
 
 const NewsTopicDisplay: React.FC<NewsTopicDisplayProps> = ({ group }) => {
-  // startIndex, endIndex 계산 제거
+  const [isFactCheckOpen, setIsFactCheckOpen] = useState(false);
 
   return (
     <div className="mb-12 p-6 md:p-8 bg-white rounded-xl shadow-2xl">
       {/* 주제 제목 및 날짜 */}
       <div className="mb-6 pb-4 border-b border-gray-200">
-        <h2 className="text-3xl font-bold text-indigo-700">{group.topic}</h2>
-        <p className="text-md text-gray-500 mt-1">{group.date}</p>
-      </div>
-
-      {/* 공통 팩트체크 */}
-      {group.commonFactCheck && (
-        <div className="mb-8 p-4 bg-indigo-50 border border-indigo-200 rounded-lg">
-          <h3 className="text-xl font-semibold text-indigo-800 mb-2">
-            토픽 공통 팩트체크
-          </h3>
-          <p className="text-sm text-gray-700 whitespace-pre-line leading-relaxed">
-            {group.commonFactCheck}
-          </p>
+        <div className="flex justify-between items-start">
+          <div>
+            <h2 className="text-3xl font-bold text-indigo-700">
+              {group.topic}
+            </h2>
+            <p className="text-md text-gray-500 mt-1">{group.date}</p>
+          </div>
+          <button
+            onClick={() => setIsFactCheckOpen(true)}
+            className="px-4 py-2 bg-blue-50 text-blue-700 rounded-lg hover:bg-blue-100 transition-colors duration-200 flex items-center shadow-sm"
+          >
+            🧠 AI 팩트체크
+          </button>
         </div>
-      )}
+      </div>
 
       {/* 미디어별 AI 요약 및 분석 */}
       <div>
@@ -47,19 +47,8 @@ const NewsTopicDisplay: React.FC<NewsTopicDisplayProps> = ({ group }) => {
               >
                 <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-3">
                   <h4 className="text-2xl font-semibold text-gray-800 mb-1 sm:mb-0">
-                    {item.media}
+                    AI 분석 결과 {/* 또는 다른 적절한 제목 */}
                   </h4>
-                  <span
-                    className={`text-sm px-3 py-1 rounded-full font-semibold ${
-                      item.politicalOrientation === "좌편향"
-                        ? "bg-blue-100 text-blue-700 ring-1 ring-blue-300"
-                        : item.politicalOrientation === "우편향"
-                        ? "bg-red-100 text-red-700 ring-1 ring-red-300"
-                        : "bg-gray-100 text-gray-700 ring-1 ring-gray-300"
-                    }`}
-                  >
-                    {item.politicalOrientation}
-                  </span>
                 </div>
 
                 <p className="text-sm text-gray-700 mb-4 whitespace-pre-line leading-relaxed">
@@ -82,7 +71,30 @@ const NewsTopicDisplay: React.FC<NewsTopicDisplayProps> = ({ group }) => {
         )}
       </div>
 
-      {/* 페이지네이션 컨트롤 제거 */}
+      {/* Fact Check Modal */}
+      <Dialog
+        open={isFactCheckOpen}
+        onClose={() => setIsFactCheckOpen(false)}
+        className="relative z-50"
+      >
+        <div className="fixed inset-0 bg-black/30" aria-hidden="true" />
+        <div className="fixed inset-0 flex items-center justify-center p-4">
+          <Dialog.Panel className="mx-auto max-w-2xl rounded bg-white p-6 max-h-[80vh] overflow-y-auto">
+            <Dialog.Title className="text-2xl font-bold text-black mb-6">
+              🧠 AI 팩트체크
+            </Dialog.Title>
+            <div className="prose prose-sm max-w-none text-black whitespace-pre-line">
+              {group.commonFactCheck}
+            </div>
+            <button
+              className="mt-6 inline-flex justify-center rounded-md border border-transparent bg-blue-100 px-4 py-2 text-sm font-medium text-blue-900 hover:bg-blue-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2"
+              onClick={() => setIsFactCheckOpen(false)}
+            >
+              닫기
+            </button>
+          </Dialog.Panel>
+        </div>
+      </Dialog>
     </div>
   );
 };

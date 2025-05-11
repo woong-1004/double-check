@@ -1,9 +1,7 @@
 export interface RawNewsItem {
   id?: string;
-  politicalOrientation: string;
   topic: string;
   date: string;
-  media: string;
   videoLink?: string; // 비디오 링크는 선택적
   aiSummary: string;
   topicFactCheck: string; // 동일 주제에 대해 중복될 수 있음
@@ -11,8 +9,6 @@ export interface RawNewsItem {
 
 export interface ProcessedNewsItem {
   id: string;
-  politicalOrientation: string;
-  media: string;
   videoLink?: string;
   aiSummary: string;
   youtubeVideoId?: string; // 유튜브 링크에서 추출한 ID

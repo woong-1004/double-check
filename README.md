@@ -56,10 +56,8 @@
 ```json
 {
   "id": "news-1", // 고유 식별자
-  "politicalOrientation": "좌편향", // 정치 성향
   "topic": "이재명 선거법 위반 사건 파기환송 재판 연기", // 주제
   "date": "2025-05-01", // 날짜
-  "media": "MBC", // 언론사
   "videoLink": "https://youtu.be/7L-pf8A1tCU?si=FUuJW4TwiJ5nfYCq", // 유튜브 영상 링크
   "aiSummary": "MBC는 대법원의 파기환송 결정에 대해...", // AI 요약
   "topicFactCheck": "🔍 팩트체크: 이재명 파기환송 결정의 의미와..." // 주제 공통 팩트체크

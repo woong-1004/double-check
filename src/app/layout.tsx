@@ -2,10 +2,10 @@ import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
 import ReactQueryProvider from "@/components/ReactQueryProvider";
-// import Link from "next/link"; // Header에서 사용하므로 여기서는 제거 가능
 import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
 import { CopilotKit } from "@copilotkit/react-core";
+import CopilotPopupLoader from "@/components/common/CopilotPopupLoader";
 import "@copilotkit/react-ui/styles.css";
 
 const inter = Inter({ subsets: ["latin"] });
@@ -66,18 +66,38 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  // Check if the runtime URL is available
+  const runtimeUrl = process.env.NEXT_PUBLIC_CHAT_API_BASE_URL;
+
+  // If no runtime URL is available, render without CopilotKit
+  if (!runtimeUrl) {
+    return (
+      <html lang="ko">
+        <body
+          className={`${inter.className} bg-gray-50 text-gray-800 flex flex-col min-h-screen`}
+        >
+          <Header />
+          <main className="pt-8">
+            <ReactQueryProvider>{children}</ReactQueryProvider>
+          </main>
+          <Footer />
+        </body>
+      </html>
+    );
+  }
+
   return (
     <html lang="ko">
       <body
         className={`${inter.className} bg-gray-50 text-gray-800 flex flex-col min-h-screen`}
       >
-        <CopilotKit runtimeUrl={process.env.NEXT_PUBLIC_CHAT_API_BASE_URL}>
+        <CopilotKit runtimeUrl={runtimeUrl}>
           <Header />
-          <main className="pt-16">
-            {/* pt-24는 헤더 높이(p-4 = 1rem = 16px, 16px*1.5=24px 정도 여유) + 추가여백. 실제 헤더 높이에 맞게 조정 필요 */}
+          <main className="pt-8">
             <ReactQueryProvider>{children}</ReactQueryProvider>
-          </main>{" "}
+          </main>
           <Footer />
+          <CopilotPopupLoader />
         </CopilotKit>
       </body>
     </html>

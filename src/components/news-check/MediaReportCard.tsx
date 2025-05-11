@@ -6,33 +6,37 @@ import YouTubePlayer from "./YouTubePlayer"; // YouTubePlayer 컴포넌트를 �
 
 interface MediaReportCardProps {
   report: ProcessedNewsItem;
-  isLeft?: boolean; // 좌측 카드인지 여부 (스타일링 목적)
+  // isLeft?: boolean; // 좌측 카드인지 여부 (스타일링 목적) - politicalOrientation이 없어지므로 일단 주석 처리 또는 제거 고려
 }
 
 const MediaReportCard: React.FC<MediaReportCardProps> = ({
   report,
-  isLeft = false,
+  // isLeft = false, // politicalOrientation이 없어지므로 일단 주석 처리 또는 제거 고려
 }) => {
-  const orientationColor =
-    report.politicalOrientation === "좌편향"
-      ? "bg-blue-100 text-blue-800 border-blue-300"
-      : report.politicalOrientation === "우편향"
-      ? "bg-red-100 text-red-800 border-red-300"
-      : "bg-gray-100 text-gray-800 border-gray-300";
+  // politicalOrientation 관련 로직 제거
+  // const orientationColor =
+  //   report.politicalOrientation === "좌편향"
+  //     ? "bg-blue-100 text-blue-800 border-blue-300"
+  //     : report.politicalOrientation === "우편향"
+  //     ? "bg-red-100 text-red-800 border-red-300"
+  //     : "bg-gray-100 text-gray-800 border-gray-300";
 
   return (
     <div
-      className={`p-5 border rounded-lg shadow-md hover:shadow-lg transition-shadow duration-300 ${
-        isLeft ? "border-blue-200 bg-blue-50" : "border-red-200 bg-red-50"
-      }`}
+      className={`p-5 border rounded-lg shadow-md hover:shadow-lg transition-shadow duration-300 bg-slate-50 border-slate-200`}
+      // className={`p-5 border rounded-lg shadow-md hover:shadow-lg transition-shadow duration-300 ${
+      //   isLeft ? "border-blue-200 bg-blue-50" : "border-red-200 bg-red-50"
+      // }`}
     >
+      {/* media 및 politicalOrientation 표시 제거 */}
       <h4 className="text-xl font-semibold mb-2 text-gray-800">
-        {report.media}
-        <span
+        {/* {report.media} */}
+        {/* <span
           className={`ml-2 text-xs px-2.5 py-1 rounded-full font-semibold ${orientationColor}`}
         >
           {report.politicalOrientation}
-        </span>
+        </span> */}
+        AI 분석 리포트 {/* 제목 대체 또는 다른 정보 표시 */}
       </h4>
 
       {report.youtubeVideoId && (
