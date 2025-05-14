@@ -1,22 +1,12 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-// import dynamic from "next/dynamic"; // dynamic import는 CopilotPopupLoader로 이동
 import {
   DocumentTextIcon,
   PencilSquareIcon,
 } from "@heroicons/react/24/outline";
-import CopilotPopupLoader from "@/components/common/CopilotPopupLoader"; // 새로 만든 로더 컴포넌트 import
-
-// DynamicCopilotPopupClient 정의 제거
-// const DynamicCopilotPopupClient = dynamic(
-//   () => import("@/components/common/CopilotPopupClient"),
-//   {
-//     ssr: false,
-//   }
-// );
 
 export const metadata: Metadata = {
-  title: "홈 | Double Check - 교차검증 플랫폼", // 템플릿 사용 안 함 (기본값이므로)
+  title: "홈 | Double Check - 교차검증 플랫폼",
   description:
     "Double Check는 다양한 정치적 시각과 정책 정보를 비교 분석하여 사용자의 합리적인 판단을 돕는 교차검증 플랫폼입니다. 주요 후보들의 정책과 최신 뉴스에 대한 다각적 분석을 제공합니다.",
   openGraph: {
@@ -24,8 +14,6 @@ export const metadata: Metadata = {
     description:
       "뉴스, 정책, 공약 정보를 한 곳에서 비교하고 균형 잡힌 시각을 얻으세요.",
     url: "/",
-    // 기본 OG 이미지는 layout.tsx에서 상속받으므로 여기서는 생략 가능
-    // 필요시 특정 이미지를 지정: images: ['/og-image-home.png'],
   },
 };
 
@@ -87,8 +75,6 @@ export default function HomePage() {
           </div>
         </div>
       </section>
-      {/* <DynamicCopilotPopupClient /> */}
-      <CopilotPopupLoader /> {/* 새로 만든 로더 컴포넌트 사용 */}
     </div>
   );
 }
