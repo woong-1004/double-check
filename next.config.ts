@@ -1,7 +1,9 @@
-import type { NextConfig } from "next";
-
-const nextConfig: NextConfig = {
-  /* config options here */
+/** @type {import('next').NextConfig} */
+const nextConfig = {
+  // Explicitly disable experimental features
+  experimental: {
+    turbo: false
+  }
 };
 
 export default nextConfig;
